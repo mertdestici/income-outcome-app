@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: income-outcome-backend
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev-secret-key-at-least-256-bits-long-replace-in-prod}
+    expiration-ms: 86400000   # 24 hours
+  rates:
+    base-url: https://api.frankfurter.app
+    base-currency: EUR
+    target-currencies: TRY,USD
+  storage:
+    upload-dir: ${user.home}/income-outcome-uploads
+    max-file-size-mb: 10
+    allowed-types:
+      - image/jpeg
+      - image/png
+      - image/webp
+      - application/pdf
+  ocr:
+    provider: tesseract   # none | tesseract | google | aws
+    tesseract:
+      data-path: classpath:tessdata
+      language: tr
