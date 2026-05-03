@@ -7,35 +7,26 @@ export type PairRates = {
   fetchedAt: number;  // epoch ms
 };
 
-const BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080';
+const BACKEND_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080';
 
-/**
- * Fetch exchange rates from the backend cache (sourced from ECB via Frankfurter).
- * Backend returns: { base: "EUR", rates: { TRY, USD }, fetchedAt: ISO instant }
- */
 export async function fetchRates(): Promise<PairRates> {
-  const res = await fetch(`${BASE}/api/rates`, { headers: { accept: 'application/json' } });
-  if (!res.ok) throw new Error(`Rates fetch failed: ${res.status}`);
-  const data = await res.json() as { base: string; rates: Record<string, number>; fetchedAt: string };
+  const res = await fetch(`${BACKEND_BASE}/api/rates`, { headers: { accept: 'application/json' } });
+  if (!res.ok) throw new Error(`Rates unavailable (${res.status})`);
 
+  const data = await res.json() as { rates?: Record<string, number>; fetchedAt?: string };
   const EURTRY = data?.rates?.TRY;
-  const eurusd = data?.rates?.USD;  // 1 EUR = X USD
+  const eurusd = data?.rates?.USD;
   if (typeof EURTRY !== 'number' || typeof eurusd !== 'number') {
-    throw new Error('Unexpected rates payload');
+    throw new Error('Rates unavailable — backend has no data yet');
   }
 
-  // Derive pair rates from EUR base:
-  // 1 USD = EURTRY / eurusd TRY
-  // 1 USD = 1 / eurusd EUR
   const round2 = (n: number) => parseFloat(n.toFixed(2));
-  const asOf = data.fetchedAt ? data.fetchedAt.slice(0, 10) : '';
-
   return {
-    EURTRY: round2(EURTRY),
-    USDTRY: round2(EURTRY / eurusd),
-    USDEUR: round2(1 / eurusd),
-    source: 'frankfurter',
-    asOf,
+    EURTRY:    round2(EURTRY),
+    USDTRY:    round2(EURTRY / eurusd),
+    USDEUR:    round2(1 / eurusd),
+    source:    'frankfurter',
+    asOf:      data.fetchedAt?.slice(0, 10) ?? '',
     fetchedAt: Date.now(),
   };
 }
