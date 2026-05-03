@@ -17,17 +17,17 @@ export default function ConfirmCapturePage({ dataUrl, fileName, source, onConfir
     <Page title="Preview" left={<span />} right={<span />}>
       <div className="flex flex-col items-center gap-6">
         {isImage ? (
-          <img src={dataUrl} alt={fileName} className="w-full max-h-[60vh] object-contain rounded-2xl border border-gray-200" />
+          <img src={dataUrl} alt={fileName} className="w-full max-h-[60vh] object-contain rounded-2xl border border-gray-200 dark:border-gray-700" />
         ) : (
           <div className="flex flex-col items-center gap-2 py-12">
-            <FileIcon className="w-16 h-16 text-gray-400" />
-            <div className="text-sm text-gray-600 break-all text-center px-4">{fileName}</div>
+            <FileIcon className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+            <div className="text-sm text-gray-600 dark:text-gray-400 break-all text-center px-4">{fileName}</div>
           </div>
         )}
 
         <div className="flex gap-4 w-full">
           <button onClick={onCancel}
-            className="flex-1 rounded-xl border border-gray-300 px-4 py-3 font-medium active:scale-95 hover:bg-gray-50">
+            className="flex-1 rounded-xl border border-gray-300 dark:border-gray-600 dark:text-gray-100 px-4 py-3 font-medium active:scale-95 hover:bg-gray-50 dark:hover:bg-gray-700">
             {source === 'scan' ? 'Retake' : 'Cancel'}
           </button>
           <button onClick={onConfirm}

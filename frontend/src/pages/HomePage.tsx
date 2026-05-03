@@ -42,10 +42,10 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
   return (
     <Page title="Income / Expense" left={<span />} right={
       <div className="flex items-center gap-1">
-        <button aria-label="Settings" onClick={onSettings} className="p-1 rounded hover:bg-gray-100">
+        <button aria-label="Settings" onClick={onSettings} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
           <Settings className="w-5 h-5" />
         </button>
-        <button onClick={onLogout} className="text-xs text-gray-500 hover:text-red-500 px-2 py-1 rounded">
+        <button onClick={onLogout} className="text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 px-2 py-1 rounded">
           Sign out
         </button>
       </div>
@@ -58,10 +58,10 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
               <h2 className="font-medium">Total Income</h2>
             </div>
             <div className="text-2xl font-semibold">{fmt(incomeTRY, 'TRY')}</div>
-            <div className="mt-2 text-sm text-gray-600 grid grid-cols-3 gap-2">
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(incomeTRY, 'TRY')}</div>
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(incomeUSD, 'USD')}</div>
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(incomeEUR, 'EUR')}</div>
+            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 grid grid-cols-3 gap-2">
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(incomeTRY, 'TRY')}</div>
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(incomeUSD, 'USD')}</div>
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(incomeEUR, 'EUR')}</div>
             </div>
           </Card>
         </button>
@@ -73,10 +73,10 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
               <h2 className="font-medium">Total Expenses</h2>
             </div>
             <div className="text-2xl font-semibold">{fmt(expenseTRY, 'TRY')}</div>
-            <div className="mt-2 text-sm text-gray-600 grid grid-cols-3 gap-2">
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(expenseTRY, 'TRY')}</div>
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(expenseUSD, 'USD')}</div>
-              <div className="rounded-lg bg-gray-100 px-2 py-1 text-center">{fmt(expenseEUR, 'EUR')}</div>
+            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 grid grid-cols-3 gap-2">
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(expenseTRY, 'TRY')}</div>
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(expenseUSD, 'USD')}</div>
+              <div className="rounded-lg bg-gray-100 dark:bg-gray-700 px-2 py-1 text-center">{fmt(expenseEUR, 'EUR')}</div>
             </div>
           </Card>
         </button>
@@ -91,11 +91,11 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
             <RatePill label="TRY/EUR" value={data?.EURTRY ?? 0} />
             <RatePill label="USD/EUR" value={data?.USDEUR ?? 0} />
           </div>
-          <div className="mt-2 text-xs text-gray-500">
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             Last updated: {data ? new Date(data.fetchedAt).toLocaleTimeString() : '—'} (source: ECB)
           </div>
           {(loading || error) && (
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {loading ? 'Loading rates…' : `Rate error: ${error}`}
             </div>
           )}

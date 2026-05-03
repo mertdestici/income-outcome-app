@@ -5,6 +5,8 @@ import Card from '../components/Card'
 import type { DocumentType } from '../types/income'
 import { documentService } from '../services/document'
 
+const inputCls = "rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+
 export default function AddDocumentPage({ defaultName, capturedFile, onUploaded, onCancel }: {
   defaultName: string
   capturedFile: File
@@ -36,7 +38,7 @@ export default function AddDocumentPage({ defaultName, capturedFile, onUploaded,
     <Page
       title="Add Document"
       left={
-        <button aria-label="Cancel" onClick={onCancel} className="p-1 rounded hover:bg-gray-100">
+        <button aria-label="Cancel" onClick={onCancel} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
           <X className="w-5 h-5" />
         </button>
       }
@@ -45,22 +47,22 @@ export default function AddDocumentPage({ defaultName, capturedFile, onUploaded,
       <Card>
         <form onSubmit={submit} className="grid grid-cols-1 gap-3">
           <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="doc-name">Document Name</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="doc-name">Document Name</label>
             <input
               id="doc-name"
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Electric bill"
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={inputCls}
             />
           </div>
           <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="doc-type">Document Type</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="doc-type">Document Type</label>
             <select
               id="doc-type"
               value={documentType}
               onChange={e => setDocumentType(e.target.value as DocumentType)}
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className={inputCls}
             >
               <option value="Receipt">Receipt</option>
               <option value="Invoice">Invoice</option>

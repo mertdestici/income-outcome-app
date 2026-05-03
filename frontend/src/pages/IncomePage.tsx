@@ -5,6 +5,8 @@ import Card from '../components/Card'
 import BottomNav from '../components/BottomNav'
 import type { Income, Currency } from '../types/income'
 
+const inputCls = "rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+
 function fmt(value: number, c: string): string {
   try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: c as any }).format(value) }
   catch { return `${value.toFixed(2)} ${c}` }
@@ -35,27 +37,27 @@ export default function IncomesPage({ onHome, onNav, incomes, onAddIncome, onDel
 
   return (
     <Page title="Incomes"
-      left={<button aria-label="Home" onClick={onHome} className="p-1 rounded hover:bg-gray-100"> <Home className="w-5 h-5" /> </button>}
+      left={<button aria-label="Home" onClick={onHome} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"> <Home className="w-5 h-5" /> </button>}
       right={<span />}
     >
       <Card>
         <form onSubmit={submit} className="grid grid-cols-1 gap-3">
           <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="title">Title</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="title">Title</label>
             <input id="title" value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Salary"
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className={inputCls} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-1">
-              <label className="text-sm text-gray-600" htmlFor="amount">Amount</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="amount">Amount</label>
               <input id="amount" type="number" inputMode="decimal" step="0.01" min="0" value={amount}
                 onChange={e => setAmount(e.target.value)} placeholder="0.00"
-                className="min-w-0 rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className={`min-w-0 ${inputCls}`} />
             </div>
             <div className="grid gap-1">
-              <label className="text-sm text-gray-600" htmlFor="currency">Currency</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="currency">Currency</label>
               <select id="currency" value={currency} onChange={e => setCurrency(e.target.value as Currency)}
-                className="min-w-0 rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                className={`min-w-0 ${inputCls}`}>
                 <option value="TRY">TRY</option>
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
@@ -70,23 +72,23 @@ export default function IncomesPage({ onHome, onNav, incomes, onAddIncome, onDel
 
       <Card>
         {incomes.length === 0 ? (
-          <div className="text-sm text-gray-600">No incomes added yet.</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">No incomes added yet.</div>
         ) : (
           <div className="grid gap-2">
-            <div className="grid grid-cols-4 text-xs font-semibold text-gray-600">
+            <div className="grid grid-cols-4 text-xs font-semibold text-gray-600 dark:text-gray-400">
               <div>Title</div>
               <div className="text-right">Amount</div>
               <div className="text-center">Currency</div>
               <div className="text-center">Delete</div>
             </div>
-            <div className="h-px bg-gray-200" />
+            <div className="h-px bg-gray-200 dark:bg-gray-700" />
             {incomes.map(it => (
               <div key={it.id} className="grid grid-cols-4 items-center text-sm">
                 <div className="truncate pr-2" title={it.title}>{it.title}</div>
                 <div className="text-right font-medium">{fmt(it.amount, it.currency)}</div>
                 <div className="text-center">{it.currency}</div>
                 <div className="flex justify-center">
-                  <button aria-label="Delete" onClick={() => onDeleteIncome(it.id)} className="p-1 rounded hover:bg-red-50 text-red-600">
+                  <button aria-label="Delete" onClick={() => onDeleteIncome(it.id)} className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { authService } from '../services/auth'
 
+const inputCls = "rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+
 export default function RegisterPage({ onSuccess, onGoLogin }: {
   onSuccess: (token: string, email: string) => void
   onGoLogin: () => void
@@ -26,23 +28,21 @@ export default function RegisterPage({ onSuccess, onGoLogin }: {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-center mb-6">Create account</h1>
-        <form onSubmit={submit} className="bg-white rounded-2xl shadow border border-gray-200 p-6 grid gap-4">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100">Create account</h1>
+        <form onSubmit={submit} className="bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-200 dark:border-gray-700 p-6 grid gap-4">
           <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="email">Email</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="email">Email</label>
             <input id="email" type="email" autoComplete="email" required value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              onChange={e => setEmail(e.target.value)} className={inputCls} />
           </div>
           <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="password">Password
-              <span className="text-gray-400 font-normal"> (min. 8 chars)</span>
+            <label className="text-sm text-gray-600 dark:text-gray-400" htmlFor="password">Password
+              <span className="text-gray-400 dark:text-gray-500 font-normal"> (min. 8 chars)</span>
             </label>
             <input id="password" type="password" autoComplete="new-password" required minLength={8} value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              onChange={e => setPassword(e.target.value)} className={inputCls} />
           </div>
           {error && <div className="text-sm text-red-600">{error}</div>}
           <button type="submit" disabled={loading}
@@ -50,9 +50,9 @@ export default function RegisterPage({ onSuccess, onGoLogin }: {
             {loading ? 'Creating account…' : 'Create account'}
           </button>
         </form>
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
           Already have an account?{' '}
-          <button onClick={onGoLogin} className="text-indigo-600 font-medium">Sign in</button>
+          <button onClick={onGoLogin} className="text-indigo-600 dark:text-indigo-400 font-medium">Sign in</button>
         </p>
       </div>
     </div>
