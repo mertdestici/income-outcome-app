@@ -4,9 +4,9 @@ import Page from '../components/Page'
 import Card from '../components/Card'
 import type { Currency, RecurrenceRule } from '../types/income'
 
-const inputCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-const selectCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
-const labelCls = "text-sm font-medium text-slate-700"
+const inputCls = "block w-full rounded-xl border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2.5 text-sm text-slate-900 dark:text-gray-100 placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+const selectCls = "block w-full rounded-xl border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2.5 text-sm text-slate-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
+const labelCls = "text-sm font-medium text-slate-700 dark:text-gray-300"
 
 export default function AddManualExpensePage({ onSave, onCancel }: {
   onSave: (data: { title: string; amount: number; currency: Currency; date: string; recurrenceRule: RecurrenceRule }) => void
@@ -31,7 +31,7 @@ export default function AddManualExpensePage({ onSave, onCancel }: {
     <Page
       title="Add Expense"
       left={
-        <button aria-label="Cancel" onClick={onCancel} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+        <button aria-label="Cancel" onClick={onCancel} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-500 dark:text-gray-400 cursor-pointer transition-colors">
           <X className="w-4 h-4" />
         </button>
       }
