@@ -39,7 +39,7 @@ app:
     secret: ${JWT_SECRET:dev-secret-key-at-least-256-bits-long-replace-in-prod}
     expiration-ms: 86400000   # 24 hours
   rates:
-    base-url: https://api.frankfurter.app
+    base-url: https://api.frankfurter.dev/v1
     base-currency: EUR
     target-currencies: TRY,USD
   storage:
