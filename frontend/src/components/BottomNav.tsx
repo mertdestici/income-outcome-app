@@ -9,9 +9,9 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
   onAddManual?: () => void
 }) {
   const [open, setOpen] = useState(false)
-  const scanRef = useRef<HTMLInputElement>(null)
+  const scanRef   = useRef<HTMLInputElement>(null)
   const photosRef = useRef<HTMLInputElement>(null)
-  const filesRef = useRef<HTMLInputElement>(null)
+  const filesRef  = useRef<HTMLInputElement>(null)
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>, source: CaptureSource) => {
     const file = e.target.files?.[0]
@@ -20,34 +20,50 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
     setOpen(false)
   }
 
+  const menuItems = [
+    { icon: Camera,      label: 'Scan document',      ref: scanRef,   onClick: () => scanRef.current?.click() },
+    { icon: ImageIcon,   label: 'From photos',         ref: photosRef, onClick: () => photosRef.current?.click() },
+    { icon: File,        label: 'From files',          ref: filesRef,  onClick: () => filesRef.current?.click() },
+    { icon: PencilLine,  label: 'Manual entry',        ref: null,      onClick: () => { setOpen(false); onAddManual?.() } },
+  ]
+
   return (
     <>
-      <input ref={scanRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => handleFile(e, 'scan')} />
+      <input ref={scanRef}   type="file" accept="image/*" capture="environment" className="hidden" onChange={e => handleFile(e, 'scan')} />
       <input ref={photosRef} type="file" accept="image/*" className="hidden" onChange={e => handleFile(e, 'photos')} />
-      <input ref={filesRef} type="file" className="hidden" onChange={e => handleFile(e, 'files')} />
+      <input ref={filesRef}  type="file" className="hidden" onChange={e => handleFile(e, 'files')} />
 
       {open && (
         <div className="fixed inset-0 z-40" onClick={() => setOpen(false)}>
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[92%] max-w-md" onClick={e => e.stopPropagation()}>
-            <div className="rounded-2xl bg-white shadow-lg border border-gray-200 p-3">
-              <div className="flex items-center justify-between mb-1">
-                <div className="text-sm font-medium">Add Expense</div>
-                <button onClick={() => setOpen(false)} className="p-1 rounded hover:bg-gray-100" aria-label="Close"><X className="w-4 h-4" /></button>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div
+            className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[92%] max-w-md"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200/80 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
+                <span className="text-sm font-semibold text-slate-900">Add Expense</span>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  aria-label="Close"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                <button onClick={() => scanRef.current?.click()} className="flex items-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 px-3 py-2">
-                  <Camera className="w-4 h-4" /><span>Scan document</span>
-                </button>
-                <button onClick={() => photosRef.current?.click()} className="flex items-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 px-3 py-2">
-                  <ImageIcon className="w-4 h-4" /><span>Add From Photos</span>
-                </button>
-                <button onClick={() => filesRef.current?.click()} className="flex items-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 px-3 py-2">
-                  <File className="w-4 h-4" /><span>Add from files</span>
-                </button>
-                <button onClick={() => { setOpen(false); onAddManual?.() }} className="flex items-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 px-3 py-2">
-                  <PencilLine className="w-4 h-4" /><span>Add Manual Expense</span>
-                </button>
+              <div className="p-3 grid grid-cols-2 gap-2">
+                {menuItems.map(({ icon: Icon, label, onClick }) => (
+                  <button
+                    key={label}
+                    onClick={onClick}
+                    className="flex items-center gap-3 rounded-xl bg-slate-50 hover:bg-slate-100 active:bg-slate-200 px-3 py-3 transition-colors cursor-pointer text-left"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-indigo-600" />
+                    </div>
+                    <span className="text-sm font-medium text-slate-700 leading-tight">{label}</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -56,20 +72,33 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
 
       <nav className="fixed bottom-0 inset-x-0 z-30">
         <div className="mx-auto max-w-md px-4 pb-[env(safe-area-inset-bottom)]">
-          <div className="relative bg-white border-t border-gray-200 shadow-lg rounded-t-2xl h-16 flex items-center justify-between px-6">
-            <button onClick={() => onNav('incomes')} className="flex flex-col items-center text-xs hover:text-gray-900" aria-label="Incomes">
-              <Wallet className="w-5 h-5" />
-              Incomes
+          <div className="relative bg-white border-t border-slate-200 shadow-[0_-2px_16px_rgba(0,0,0,0.06)] rounded-t-2xl h-16 flex items-center justify-between px-8">
+            <button
+              onClick={() => onNav('incomes')}
+              className="flex flex-col items-center gap-0.5 cursor-pointer group"
+              aria-label="Incomes"
+            >
+              <Wallet className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+              <span className="text-[11px] font-medium text-slate-400 group-hover:text-indigo-600 transition-colors">Income</span>
             </button>
+
             <button
               onClick={() => setOpen(v => !v)}
-              className="absolute -top-5 left-1/2 -translate-x-1/2 bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-xl active:scale-95"
-              aria-haspopup="menu" aria-expanded={open} aria-label="Add Expense">
-              <Plus className="w-6 h-6" />
+              className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-b from-indigo-500 to-indigo-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg shadow-indigo-300/60 active:scale-95 transition-transform cursor-pointer"
+              aria-haspopup="menu"
+              aria-expanded={open}
+              aria-label="Add Expense"
+            >
+              <Plus className={`w-6 h-6 transition-transform duration-200 ${open ? 'rotate-45' : ''}`} />
             </button>
-            <button onClick={() => onNav('expenses')} className="flex flex-col items-center text-xs hover:text-gray-900" aria-label="Expenses">
-              <Receipt className="w-5 h-5" />
-              Expenses
+
+            <button
+              onClick={() => onNav('expenses')}
+              className="flex flex-col items-center gap-0.5 cursor-pointer group"
+              aria-label="Expenses"
+            >
+              <Receipt className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+              <span className="text-[11px] font-medium text-slate-400 group-hover:text-indigo-600 transition-colors">Expenses</span>
             </button>
           </div>
         </div>

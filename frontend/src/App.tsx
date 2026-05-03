@@ -11,7 +11,7 @@ import RegisterPage from './pages/RegisterPage'
 import SettingsPage from './pages/SettingsPage'
 import Toast from './components/Toast'
 import DocumentPreviewOverlay from './components/DocumentPreviewOverlay'
-import type { Income, Expense, Currency, DocumentType, OcrStatusResponse } from './types/income'
+import type { Income, Expense, Currency, DocumentType, OcrStatusResponse, RecurrenceRule } from './types/income'
 import { incomeService } from './services/income'
 import { expenseService } from './services/expense'
 import type { CreateExpensePayload } from './services/expense'
@@ -106,8 +106,8 @@ export default function App() {
   }, [])
 
   // ── Income CRUD ─────────────────────────────────────────────────────────────
-  const addIncome = async ({ title, amount, currency }: { title: string; amount: number; currency: Currency }) => {
-    const income = await incomeService.create({ title, amount, currency })
+  const addIncome = async ({ title, amount, currency, recurrenceRule }: Omit<Income, 'id'>) => {
+    const income = await incomeService.create({ title, amount, currency, recurrenceRule })
     setIncomes(prev => [income, ...prev])
   }
 
@@ -216,7 +216,7 @@ export default function App() {
 
   // ── Manual expense ──────────────────────────────────────────────────────────
   const handleAddManual  = () => setRoute('add-manual-expense')
-  const handleManualSave = async (data: { title: string; amount: number; currency: Currency; date: string }) => {
+  const handleManualSave = async (data: { title: string; amount: number; currency: Currency; date: string; recurrenceRule: RecurrenceRule }) => {
     await addExpense(data)
     setRoute('expenses')
   }

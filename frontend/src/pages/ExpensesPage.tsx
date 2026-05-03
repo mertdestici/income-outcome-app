@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Eye, Home, Loader2, Plus, Trash2 } from 'lucide-react'
+import { Eye, Home, Loader2, Plus, Receipt, Trash2 } from 'lucide-react'
 import Page from '../components/Page'
 import Card from '../components/Card'
 import BottomNav from '../components/BottomNav'
 import type { Expense } from '../types/income'
+
+const selectCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
 
 function fmt(value: number, c: string): string {
   try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: c as any }).format(value) }
@@ -21,9 +23,9 @@ export default function ExpensesPage({ onHome, onNav, expenses, onDeleteExpense,
   onCapture: (file: File, source: 'scan' | 'photos' | 'files') => void
   onViewDocument: (documentId: string) => void
 }) {
-  const now = new Date()
+  const now  = new Date()
   const [month, setMonth] = useState(now.getMonth())
-  const [year, setYear]   = useState(now.getFullYear())
+  const [year,  setYear]  = useState(now.getFullYear())
 
   const allYears = expenses.map(e => parseInt(e.date?.slice(0, 4) || String(now.getFullYear())))
   const minYear  = Math.min(now.getFullYear(), ...allYears)
@@ -40,93 +42,116 @@ export default function ExpensesPage({ onHome, onNav, expenses, onDeleteExpense,
   return (
     <Page
       title="Expenses"
-      left={<button aria-label="Home" onClick={onHome} className="p-1 rounded hover:bg-gray-100"><Home className="w-5 h-5" /></button>}
-      right={<button aria-label="Add expense" onClick={onAddManual} className="p-1 rounded hover:bg-gray-100"><Plus className="w-5 h-5" /></button>}
+      left={
+        <button aria-label="Home" onClick={onHome} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+          <Home className="w-4 h-4" />
+        </button>
+      }
+      right={
+        <button aria-label="Add expense" onClick={onAddManual} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+          <Plus className="w-4 h-4" />
+        </button>
+      }
     >
-      <Card>
-        <div className="flex gap-3">
-          <div className="grid gap-1 flex-1">
-            <label className="text-xs text-gray-500">Month</label>
-            <select value={month} onChange={e => setMonth(Number(e.target.value))}
-              className="rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              {MONTHS.map((m, i) => <option key={i} value={i}>{m}</option>)}
-            </select>
-          </div>
-          <div className="grid gap-1 flex-1">
-            <label className="text-xs text-gray-500">Year</label>
-            <select value={year} onChange={e => setYear(Number(e.target.value))}
-              className="rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              {years.map(y => <option key={y} value={y}>{y}</option>)}
-            </select>
-          </div>
-        </div>
-      </Card>
-
-      <Card>
-        {filtered.length === 0 ? (
-          <div className="text-sm text-gray-600">No expenses for {MONTHS[month]} {year}.</div>
-        ) : (
-          <div className="grid gap-2">
-            {/* Header */}
-            <div className="grid grid-cols-6 text-xs font-semibold text-gray-600">
-              <div>Name</div>
-              <div className="text-center">Date</div>
-              <div className="text-right">Amount</div>
-              <div className="text-center">Currency</div>
-              <div className="text-center">Doc</div>
-              <div className="text-center">Delete</div>
+      <div className="grid gap-4">
+        <Card>
+          <div className="flex gap-3">
+            <div className="grid gap-1.5 flex-1">
+              <label className="text-xs font-medium text-slate-500">Month</label>
+              <select value={month} onChange={e => setMonth(Number(e.target.value))} className={selectCls}>
+                {MONTHS.map((m, i) => <option key={i} value={i}>{m}</option>)}
+              </select>
             </div>
-            <div className="h-px bg-gray-200" />
-
-            {filtered.map(it => it.isPlaceholder
-              ? (
-                // OCR placeholder row — no delete or view, just a spinner
-                <div key={it.id} className="grid grid-cols-6 items-center text-sm text-gray-400 italic">
-                  <div className="flex items-center gap-1 col-span-2 truncate">
-                    <Loader2 className="w-3 h-3 animate-spin shrink-0" />
-                    Processing…
-                  </div>
-                  <div />
-                  <div />
-                  <div />
-                  <div />
-                </div>
-              )
-              : (
-                <div key={it.id} className="grid grid-cols-6 items-center text-sm">
-                  <div className="truncate pr-2" title={it.title}>{it.title}</div>
-                  <div className="text-center text-xs text-gray-500">{it.date}</div>
-                  <div className="text-right font-medium">{fmt(it.amount, it.currency)}</div>
-                  <div className="text-center">{it.currency}</div>
-
-                  {/* View button — only for expenses with an associated document */}
-                  <div className="flex justify-center">
-                    {it.documentId && (
-                      <button
-                        aria-label="View document"
-                        onClick={() => onViewDocument(it.documentId!)}
-                        className="p-1 rounded hover:bg-indigo-50 text-indigo-600"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="flex justify-center">
-                    <button
-                      aria-label="Delete"
-                      onClick={() => onDeleteExpense(it.id)}
-                      className="p-1 rounded hover:bg-red-50 text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )
-            )}
+            <div className="grid gap-1.5 flex-1">
+              <label className="text-xs font-medium text-slate-500">Year</label>
+              <select value={year} onChange={e => setYear(Number(e.target.value))} className={selectCls}>
+                {years.map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
           </div>
-        )}
-      </Card>
+        </Card>
+
+        <Card>
+          <h2 className="text-sm font-semibold text-slate-700 mb-3">
+            {MONTHS[month]} {year}
+            {filtered.length > 0 && (
+              <span className="ml-2 text-xs font-normal text-slate-400">
+                {filtered.filter(e => !e.isPlaceholder).length} expense{filtered.filter(e => !e.isPlaceholder).length !== 1 ? 's' : ''}
+              </span>
+            )}
+          </h2>
+
+          {filtered.length === 0 ? (
+            <div className="py-8 flex flex-col items-center gap-2 text-center">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                <Receipt className="w-5 h-5 text-slate-300" />
+              </div>
+              <p className="text-sm font-medium text-slate-500">No expenses for {MONTHS[month]} {year}</p>
+              <p className="text-xs text-slate-400">Use the + button to add one</p>
+            </div>
+          ) : (
+            <div className="grid gap-0.5">
+              <div className="grid grid-cols-[1fr_80px_40px_40px] text-xs font-semibold text-slate-400 uppercase tracking-wide px-1 pb-2 border-b border-slate-100">
+                <div>Title</div>
+                <div className="text-right pr-2">Amount</div>
+                <div className="text-center">Doc</div>
+                <div />
+              </div>
+
+              {filtered.map(it => it.isPlaceholder
+                ? (
+                  <div key={it.id} className="grid grid-cols-[1fr_80px_40px_40px] items-center py-2.5 px-1 rounded-xl">
+                    <div className="flex items-center gap-2 text-sm text-slate-400 italic col-span-2">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-indigo-400" />
+                      <span>Processing…</span>
+                    </div>
+                    <div /><div />
+                  </div>
+                )
+                : (
+                  <div key={it.id} className="grid grid-cols-[1fr_80px_40px_40px] items-center py-2.5 px-1 rounded-xl hover:bg-slate-50 transition-colors">
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-slate-900 truncate" title={it.title}>{it.title}</div>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="text-[11px] text-slate-400">{it.date}</span>
+                        {it.recurrenceRule && it.recurrenceRule !== 'NONE' && (
+                          <span className="inline-block text-[10px] font-medium text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded-md">
+                            {it.recurrenceRule.charAt(0) + it.recurrenceRule.slice(1).toLowerCase()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="text-right pr-2">
+                      <div className="text-sm font-semibold text-rose-700 tabular-nums">{fmt(it.amount, it.currency)}</div>
+                      <div className="text-[11px] text-slate-400">{it.currency}</div>
+                    </div>
+                    <div className="flex justify-center">
+                      {it.documentId && (
+                        <button
+                          aria-label="View document"
+                          onClick={() => onViewDocument(it.documentId!)}
+                          className="p-1.5 rounded-lg hover:bg-indigo-50 text-slate-300 hover:text-indigo-600 transition-colors cursor-pointer"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex justify-center">
+                      <button
+                        aria-label="Delete"
+                        onClick={() => onDeleteExpense(it.id)}
+                        className="p-1.5 rounded-lg hover:bg-red-50 text-slate-300 hover:text-red-500 transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </Card>
+      </div>
 
       <BottomNav onNav={onNav} onCapture={onCapture} onAddManual={onAddManual} />
     </Page>

@@ -17,26 +17,5 @@ services:
       timeout: 5s
       retries: 5
 
-  app:
-    build: .
-    container_name: income_outcome_app
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-      DATABASE_URL: jdbc:postgresql://postgres:5432/income_outcome_dev
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      JWT_SECRET: ${JWT_SECRET}
-      CORS_ALLOWED_ORIGIN: ${CORS_ALLOWED_ORIGIN:-http://localhost:5173}
-      UPLOAD_DIR: /data/income-outcome-uploads
-    volumes:
-      - uploads_data:/data/income-outcome-uploads
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
 volumes:
   postgres_data:
-  uploads_data:

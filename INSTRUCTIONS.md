@@ -68,12 +68,16 @@ When a document is submitted through any of the three input flows (Scan Document
 - **Date** — When the expense was made
 - **Amount** — The total amount of the expense
 
+This AI/ML-powered extraction must run asynchronously in the background after the file is uploaded or scanned. The uploaded receipt, invoice, or photo is analyzed to identify where the expense was made, on which date it was made, and what the total amount was.
+
 ### Processing State on the Expenses Page
 
 Because OCR runs asynchronously, the following behavior applies:
 
 - **If processing completes within ~2–3 seconds:** A "Processing…" placeholder row is shown immediately on the Expenses page while OCR runs. Once complete, the placeholder is replaced with the actual expense data.
 - **If processing takes longer than ~2–3 seconds:** No placeholder is shown. Instead, a notification/toast banner is displayed when processing finishes and the new expense row appears at that point.
+
+This ensures the asynchronous backend process is still reflected clearly in the Expenses page without blocking the user interface.
 
 ### OCR Review Screen
 
@@ -143,6 +147,8 @@ This screen contains:
 On the **20th of each month**, the system automatically compiles all documents uploaded or scanned during that month (from Scan Document, Add From Photos, and Add From Files flows) into a single PDF and emails it to a configurable recipient address.
 
 The recipient email address is configured by the user in the **Settings** page. If no address is set, the monthly report is not sent.
+
+All scanned documents, uploaded photos, and uploaded files included in expense creation should be eligible for this monthly compilation flow.
 
 ## Settings Page
 
