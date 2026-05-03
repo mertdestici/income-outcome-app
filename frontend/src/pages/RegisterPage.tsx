@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Wallet } from 'lucide-react'
 import { authService } from '../services/auth'
 
-const inputCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+const inputCls = "block w-full rounded-xl border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2.5 text-sm text-slate-900 dark:text-gray-100 placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
 
 export default function RegisterPage({ onSuccess, onGoLogin }: {
   onSuccess: (token: string, email: string) => void
@@ -29,20 +29,20 @@ export default function RegisterPage({ onSuccess, onGoLogin }: {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center bg-slate-50 px-4">
+    <div className="min-h-dvh flex flex-col items-center justify-center bg-slate-50 dark:bg-gray-900 px-4">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
           <div className="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200 mb-4">
             <Wallet className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Create account</h1>
-          <p className="text-sm text-slate-500 mt-1">Start tracking your finances</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100 tracking-tight">Create account</h1>
+          <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Start tracking your finances</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/80 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm ring-1 ring-slate-200/80 dark:ring-gray-700 p-6">
           <form onSubmit={submit} className="grid gap-4">
             <div className="grid gap-1.5">
-              <label className="text-sm font-medium text-slate-700" htmlFor="email">Email</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-gray-300" htmlFor="email">Email</label>
               <input
                 id="email"
                 type="email"
@@ -55,7 +55,7 @@ export default function RegisterPage({ onSuccess, onGoLogin }: {
               />
             </div>
             <div className="grid gap-1.5">
-              <label className="text-sm font-medium text-slate-700" htmlFor="password">
+              <label className="text-sm font-medium text-slate-700 dark:text-gray-300" htmlFor="password">
                 Password
               </label>
               <input
@@ -83,7 +83,7 @@ export default function RegisterPage({ onSuccess, onGoLogin }: {
           </form>
         </div>
 
-        <p className="text-center text-sm text-slate-500 mt-5">
+        <p className="text-center text-sm text-slate-500 dark:text-gray-400 mt-5">
           Already have an account?{' '}
           <button onClick={onGoLogin} className="text-indigo-600 font-semibold cursor-pointer hover:underline">
             Sign in

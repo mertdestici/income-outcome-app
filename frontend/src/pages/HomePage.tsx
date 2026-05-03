@@ -48,10 +48,10 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
       left={<span />}
       right={
         <div className="flex items-center gap-0.5">
-          <button aria-label="Settings" onClick={onSettings} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+          <button aria-label="Settings" onClick={onSettings} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-500 dark:text-gray-400 cursor-pointer transition-colors">
             <Settings className="w-4 h-4" />
           </button>
-          <button onClick={onLogout} aria-label="Sign out" className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-rose-500 cursor-pointer transition-colors">
+          <button onClick={onLogout} aria-label="Sign out" className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-500 dark:text-gray-400 hover:text-rose-500 cursor-pointer transition-colors">
             <LogOut className="w-4 h-4" />
           </button>
         </div>
@@ -94,17 +94,17 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
                 <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
                   <Wallet className="w-5 h-5 text-emerald-600" />
                 </div>
-                <span className="font-semibold text-slate-900">Income</span>
+                <span className="font-semibold text-slate-900 dark:text-gray-100">Income</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-300" />
+              <ChevronRight className="w-4 h-4 text-slate-300 dark:text-gray-600" />
             </div>
             <p className="text-2xl font-bold text-emerald-700 tabular-nums tracking-tight">
               {fmt(incomeTRY, 'TRY')}
             </p>
             <div className="mt-3 grid grid-cols-3 gap-1.5">
               {[['TRY', incomeTRY], ['USD', incomeUSD], ['EUR', incomeEUR]].map(([c, v]) => (
-                <div key={c as string} className="rounded-lg bg-slate-50 px-2 py-1.5 text-center">
-                  <span className="text-xs font-medium text-slate-500 tabular-nums">{fmt(v as number, c as string)}</span>
+                <div key={c as string} className="rounded-lg bg-slate-50 dark:bg-gray-700 px-2 py-1.5 text-center">
+                  <span className="text-xs font-medium text-slate-500 dark:text-gray-400 tabular-nums">{fmt(v as number, c as string)}</span>
                 </div>
               ))}
             </div>
@@ -119,17 +119,17 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
                 <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
                   <Receipt className="w-5 h-5 text-rose-600" />
                 </div>
-                <span className="font-semibold text-slate-900">Expenses</span>
+                <span className="font-semibold text-slate-900 dark:text-gray-100">Expenses</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-300" />
+              <ChevronRight className="w-4 h-4 text-slate-300 dark:text-gray-600" />
             </div>
             <p className="text-2xl font-bold text-rose-700 tabular-nums tracking-tight">
               {fmt(expenseTRY, 'TRY')}
             </p>
             <div className="mt-3 grid grid-cols-3 gap-1.5">
               {[['TRY', expenseTRY], ['USD', expenseUSD], ['EUR', expenseEUR]].map(([c, v]) => (
-                <div key={c as string} className="rounded-lg bg-slate-50 px-2 py-1.5 text-center">
-                  <span className="text-xs font-medium text-slate-500 tabular-nums">{fmt(v as number, c as string)}</span>
+                <div key={c as string} className="rounded-lg bg-slate-50 dark:bg-gray-700 px-2 py-1.5 text-center">
+                  <span className="text-xs font-medium text-slate-500 dark:text-gray-400 tabular-nums">{fmt(v as number, c as string)}</span>
                 </div>
               ))}
             </div>
@@ -143,16 +143,16 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
               <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
                 <Coins className="w-5 h-5 text-indigo-600" />
               </div>
-              <span className="font-semibold text-slate-900">Exchange Rates</span>
+              <span className="font-semibold text-slate-900 dark:text-gray-100">Exchange Rates</span>
             </div>
-            {loading && <Loader2 className="w-4 h-4 text-slate-400 animate-spin" />}
+            {loading && <Loader2 className="w-4 h-4 text-slate-400 dark:text-gray-500 animate-spin" />}
           </div>
           <div className="grid grid-cols-3 gap-2">
             <RatePill label="TRY/USD" value={data?.USDTRY ?? 0} />
             <RatePill label="TRY/EUR" value={data?.EURTRY ?? 0} />
             <RatePill label="USD/EUR" value={data?.USDEUR ?? 0} />
           </div>
-          <div className="mt-2.5 flex items-center justify-between text-xs text-slate-400">
+          <div className="mt-2.5 flex items-center justify-between text-xs text-slate-400 dark:text-gray-500">
             <span>Updated {data ? new Date(data.fetchedAt).toLocaleTimeString() : '—'}</span>
             <span>ECB · 30s refresh</span>
           </div>

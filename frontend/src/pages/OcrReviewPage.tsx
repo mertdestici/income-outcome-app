@@ -5,9 +5,9 @@ import Card from '../components/Card'
 import type { Currency, DocumentType, OcrStatusResponse } from '../types/income'
 import type { CreateExpensePayload } from '../services/expense'
 
-const inputCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-const selectCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
-const labelCls = "text-sm font-medium text-slate-700"
+const inputCls = "block w-full rounded-xl border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2.5 text-sm text-slate-900 dark:text-gray-100 placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+const selectCls = "block w-full rounded-xl border border-slate-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2.5 text-sm text-slate-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
+const labelCls = "text-sm font-medium text-slate-700 dark:text-gray-300"
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10)
@@ -39,18 +39,18 @@ export default function OcrReviewPage({ ocrResult, documentId, documentType, onS
     <Page
       title="Review Document"
       left={
-        <button aria-label="Cancel" onClick={onCancel} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+        <button aria-label="Cancel" onClick={onCancel} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-500 dark:text-gray-400 cursor-pointer transition-colors">
           <X className="w-4 h-4" />
         </button>
       }
       right={<span />}
     >
       <div className="grid gap-4">
-        <div className="flex items-center gap-3 rounded-2xl bg-indigo-50 ring-1 ring-indigo-200/60 px-4 py-3">
-          <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
-            <ScanLine className="w-4 h-4 text-indigo-600" />
+        <div className="flex items-center gap-3 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 ring-1 ring-indigo-200/60 dark:ring-indigo-700/60 px-4 py-3">
+          <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-800/50 flex items-center justify-center shrink-0">
+            <ScanLine className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <p className="text-sm text-indigo-700">
+          <p className="text-sm text-indigo-700 dark:text-indigo-300">
             We extracted the details below from your document. Review and correct if needed.
           </p>
         </div>

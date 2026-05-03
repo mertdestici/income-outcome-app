@@ -40,12 +40,12 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
             className="absolute bottom-24 left-1/2 -translate-x-1/2 w-[92%] max-w-md"
             onClick={e => e.stopPropagation()}
           >
-            <div className="rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200/80 overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
-                <span className="text-sm font-semibold text-slate-900">Add Expense</span>
+            <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-2xl ring-1 ring-slate-200/80 dark:ring-gray-700 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 dark:border-gray-700">
+                <span className="text-sm font-semibold text-slate-900 dark:text-gray-100">Add Expense</span>
                 <button
                   onClick={() => setOpen(false)}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-400 dark:text-gray-500 hover:text-slate-600 dark:hover:text-gray-300 transition-colors cursor-pointer"
                   aria-label="Close"
                 >
                   <X className="w-4 h-4" />
@@ -56,12 +56,12 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
                   <button
                     key={label}
                     onClick={onClick}
-                    className="flex items-center gap-3 rounded-xl bg-slate-50 hover:bg-slate-100 active:bg-slate-200 px-3 py-3 transition-colors cursor-pointer text-left"
+                    className="flex items-center gap-3 rounded-xl bg-slate-50 dark:bg-gray-700 hover:bg-slate-100 dark:hover:bg-gray-700 active:bg-slate-200 dark:active:bg-gray-600 px-3 py-3 transition-colors cursor-pointer text-left"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
-                      <Icon className="w-4 h-4 text-indigo-600" />
+                    <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                     </div>
-                    <span className="text-sm font-medium text-slate-700 leading-tight">{label}</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-gray-300 leading-tight">{label}</span>
                   </button>
                 ))}
               </div>
@@ -72,14 +72,14 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
 
       <nav className="fixed bottom-0 inset-x-0 z-30">
         <div className="mx-auto max-w-md px-4 pb-[env(safe-area-inset-bottom)]">
-          <div className="relative bg-white border-t border-slate-200 shadow-[0_-2px_16px_rgba(0,0,0,0.06)] rounded-t-2xl h-16 flex items-center justify-between px-8">
+          <div className="relative bg-white dark:bg-gray-800 border-t border-slate-200 dark:border-gray-700 shadow-[0_-2px_16px_rgba(0,0,0,0.06)] rounded-t-2xl h-16 flex items-center justify-between px-8">
             <button
               onClick={() => onNav('incomes')}
               className="flex flex-col items-center gap-0.5 cursor-pointer group"
               aria-label="Incomes"
             >
-              <Wallet className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-              <span className="text-[11px] font-medium text-slate-400 group-hover:text-indigo-600 transition-colors">Income</span>
+              <Wallet className="w-5 h-5 text-slate-400 dark:text-gray-500 group-hover:text-indigo-600 transition-colors" />
+              <span className="text-[11px] font-medium text-slate-400 dark:text-gray-500 group-hover:text-indigo-600 transition-colors">Income</span>
             </button>
 
             <button
@@ -97,8 +97,8 @@ export default function BottomNav({ onNav, onCapture, onAddManual }: {
               className="flex flex-col items-center gap-0.5 cursor-pointer group"
               aria-label="Expenses"
             >
-              <Receipt className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-              <span className="text-[11px] font-medium text-slate-400 group-hover:text-indigo-600 transition-colors">Expenses</span>
+              <Receipt className="w-5 h-5 text-slate-400 dark:text-gray-500 group-hover:text-indigo-600 transition-colors" />
+              <span className="text-[11px] font-medium text-slate-400 dark:text-gray-500 group-hover:text-indigo-600 transition-colors">Expenses</span>
             </button>
           </div>
         </div>
