@@ -1,12 +1,14 @@
 export type Currency = 'TRY' | 'USD' | 'EUR'
 export type DocumentType = 'Receipt' | 'Invoice'
 export type OcrStatus = 'PENDING' | 'PROCESSING' | 'DONE' | 'FAILED'
+export type RecurrenceRule = 'NONE' | 'WEEKLY' | 'MONTHLY' | 'YEARLY'
 
 export type Income = {
   id: string
   title: string
   amount: number
   currency: Currency
+  recurrenceRule?: RecurrenceRule
   createdAt?: string
 }
 
@@ -18,6 +20,7 @@ export type Expense = {
   date: string
   documentType?: DocumentType
   documentId?: string       // present when linked to an uploaded document
+  recurrenceRule?: RecurrenceRule
   isPlaceholder?: boolean   // transient UI state only — never sent to API
   createdAt?: string
 }

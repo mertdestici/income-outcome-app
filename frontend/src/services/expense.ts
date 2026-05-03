@@ -1,5 +1,5 @@
 import { api } from './api'
-import type { Expense, Currency, DocumentType } from '../types/income'
+import type { Expense, Currency, DocumentType, RecurrenceRule } from '../types/income'
 
 export type ExpensePage = {
   content: Expense[]
@@ -14,7 +14,8 @@ export type CreateExpensePayload = {
   currency: Currency
   date: string
   documentType?: DocumentType
-  documentId?: string   // links a pre-uploaded OCR document
+  documentId?: string        // links a pre-uploaded OCR document
+  recurrenceRule?: RecurrenceRule
 }
 
 export const expenseService = {

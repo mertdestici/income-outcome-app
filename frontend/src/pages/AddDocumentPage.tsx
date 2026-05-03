@@ -5,6 +5,10 @@ import Card from '../components/Card'
 import type { DocumentType } from '../types/income'
 import { documentService } from '../services/document'
 
+const inputCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+const selectCls = "block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors cursor-pointer"
+const labelCls = "text-sm font-medium text-slate-700"
+
 export default function AddDocumentPage({ defaultName, capturedFile, onUploaded, onCancel }: {
   defaultName: string
   capturedFile: File
@@ -36,49 +40,38 @@ export default function AddDocumentPage({ defaultName, capturedFile, onUploaded,
     <Page
       title="Add Document"
       left={
-        <button aria-label="Cancel" onClick={onCancel} className="p-1 rounded hover:bg-gray-100">
-          <X className="w-5 h-5" />
+        <button aria-label="Cancel" onClick={onCancel} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 cursor-pointer transition-colors">
+          <X className="w-4 h-4" />
         </button>
       }
       right={<span />}
     >
       <Card>
-        <form onSubmit={submit} className="grid grid-cols-1 gap-3">
-          <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="doc-name">Document Name</label>
-            <input
-              id="doc-name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="e.g. Electric bill"
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+        <form onSubmit={submit} className="grid gap-4">
+          <div className="grid gap-1.5">
+            <label className={labelCls} htmlFor="doc-name">Document Name</label>
+            <input id="doc-name" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Electric bill"
+              className={inputCls} />
           </div>
-          <div className="grid gap-1">
-            <label className="text-sm text-gray-600" htmlFor="doc-type">Document Type</label>
-            <select
-              id="doc-type"
-              value={documentType}
-              onChange={e => setDocumentType(e.target.value as DocumentType)}
-              className="rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
+          <div className="grid gap-1.5">
+            <label className={labelCls} htmlFor="doc-type">Document Type</label>
+            <select id="doc-type" value={documentType} onChange={e => setDocumentType(e.target.value as DocumentType)}
+              className={selectCls}>
               <option value="Receipt">Receipt</option>
               <option value="Invoice">Invoice</option>
             </select>
           </div>
-          <button
-            type="submit"
-            disabled={!canSave}
-            className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600
-                       disabled:bg-indigo-300 text-white px-4 py-2 font-medium active:scale-95"
-          >
+
+          {!name.trim() && !uploading && (
+            <p className="text-xs text-red-500">Enter a document name.</p>
+          )}
+          {error && <p className="text-xs text-red-500">{error}</p>}
+
+          <button type="submit" disabled={!canSave}
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 disabled:bg-indigo-300 disabled:cursor-not-allowed text-white px-4 py-3 font-semibold cursor-pointer active:scale-[0.98] transition-all duration-150 mt-1">
             {uploading && <Loader2 className="w-4 h-4 animate-spin" />}
             {uploading ? 'Uploading…' : 'Save Document'}
           </button>
-          {!name.trim() && !uploading && (
-            <p className="text-xs text-red-600">Enter a document name.</p>
-          )}
-          {error && <p className="text-xs text-red-600">{error}</p>}
         </form>
       </Card>
     </Page>

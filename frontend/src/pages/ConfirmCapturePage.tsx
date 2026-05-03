@@ -15,24 +15,34 @@ export default function ConfirmCapturePage({ dataUrl, fileName, source, onConfir
 
   return (
     <Page title="Preview" left={<span />} right={<span />}>
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-5">
         {isImage ? (
-          <img src={dataUrl} alt={fileName} className="w-full max-h-[60vh] object-contain rounded-2xl border border-gray-200" />
+          <img
+            src={dataUrl}
+            alt={fileName}
+            className="w-full max-h-[60vh] object-contain rounded-2xl ring-1 ring-slate-200/80 shadow-sm"
+          />
         ) : (
-          <div className="flex flex-col items-center gap-2 py-12">
-            <FileIcon className="w-16 h-16 text-gray-400" />
-            <div className="text-sm text-gray-600 break-all text-center px-4">{fileName}</div>
+          <div className="w-full flex flex-col items-center gap-3 py-14 rounded-2xl bg-white ring-1 ring-slate-200/80">
+            <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center">
+              <FileIcon className="w-7 h-7 text-slate-400" />
+            </div>
+            <p className="text-sm text-slate-600 break-all text-center px-6 font-medium">{fileName}</p>
           </div>
         )}
 
-        <div className="flex gap-4 w-full">
-          <button onClick={onCancel}
-            className="flex-1 rounded-xl border border-gray-300 px-4 py-3 font-medium active:scale-95 hover:bg-gray-50">
+        <div className="flex gap-3 w-full">
+          <button
+            onClick={onCancel}
+            className="flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 cursor-pointer active:scale-[0.98] hover:bg-slate-50 transition-all duration-150"
+          >
             {source === 'scan' ? 'Retake' : 'Cancel'}
           </button>
-          <button onClick={onConfirm}
-            className="flex-1 rounded-xl bg-indigo-600 text-white px-4 py-3 font-medium active:scale-95">
-            Done
+          <button
+            onClick={onConfirm}
+            className="flex-1 rounded-xl bg-indigo-600 text-white px-4 py-3 font-semibold cursor-pointer active:scale-[0.98] transition-all duration-150 shadow-sm shadow-indigo-100"
+          >
+            Continue
           </button>
         </div>
       </div>
