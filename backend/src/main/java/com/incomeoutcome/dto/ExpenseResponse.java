@@ -17,5 +17,8 @@ public record ExpenseResponse(
         LocalDate date,
         DocumentType documentType,
         RecurrenceRule recurrenceRule,
+        String card,
+        String category,
+        String note,
         Instant createdAt
 ) {}

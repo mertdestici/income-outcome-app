@@ -9,6 +9,8 @@ import OcrReviewPage from './pages/OcrReviewPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import SettingsPage from './pages/SettingsPage'
+import LedgerDayPage from './pages/LedgerDayPage'
+import LedgerMonthPage from './pages/LedgerMonthPage'
 import Toast from './components/Toast'
 import DocumentPreviewOverlay from './components/DocumentPreviewOverlay'
 import type { Income, Expense, Currency, DocumentType, OcrStatusResponse, RecurrenceRule } from './types/income'
@@ -17,9 +19,11 @@ import { expenseService } from './services/expense'
 import type { CreateExpensePayload } from './services/expense'
 import { authService } from './services/auth'
 import { useOcrPolling } from './services/useOcrPolling'
+import { localDateStr } from './services/ledger'
 
 type Route = 'home' | 'incomes' | 'expenses' | 'add-manual-expense'
            | 'confirm-capture' | 'add-document' | 'ocr-review' | 'settings' | 'login' | 'register'
+           | 'ledger' | 'ledger-month'
 type AuthState = { token: string; email: string } | null
 type CapturedFile = { file: File; dataUrl: string; fileName: string; source: 'scan' | 'photos' | 'files' } | null
 type ToastState = { message: string; type: 'info' | 'error' } | null
@@ -30,6 +34,19 @@ function todayStr() {
 
 const PLACEHOLDER_ID_PREFIX = '__ocr_placeholder__'
 
+type LedgerLink =
+  | { route: 'ledger'; date: string }
+  | { route: 'ledger-month'; year: number; month: number }
+
+/** Reminder emails link to #ledger/YYYY-MM-DD and #ledger-month/YYYY-MM. */
+function parseLedgerHash(hash: string): LedgerLink | null {
+  const day = hash.match(/^#ledger(?:\/(\d{4}-\d{2}-\d{2}))?$/)
+  if (day) return { route: 'ledger', date: day[1] ?? localDateStr() }
+  const month = hash.match(/^#ledger-month\/(\d{4})-(\d{2})$/)
+  if (month) return { route: 'ledger-month', year: Number(month[1]), month: Number(month[2]) }
+  return null
+}
+
 export default function App() {
   const [route,       setRoute]       = useState<Route>('login')
   const [auth,        setAuth]        = useState<AuthState>(null)
@@ -37,6 +54,13 @@ export default function App() {
   const [expenses,    setExpenses]    = useState<Expense[]>([])
   const [capturedFile, setCapturedFile] = useState<CapturedFile>(null)
   const [toast,       setToast]       = useState<ToastState>(null)
+
+  // Nightly Ledger
+  const [ledgerDate,  setLedgerDate]  = useState(() => localDateStr())
+  const [ledgerMonth, setLedgerMonth] = useState(() => {
+    const now = new Date()
+    return { year: now.getFullYear(), month: now.getMonth() + 1 }
+  })
 
   // Document preview overlay
   const [previewDocumentId, setPreviewDocumentId] = useState<string | null>(null)
@@ -52,9 +76,33 @@ export default function App() {
     const email = localStorage.getItem('auth_email')
     if (token && email) {
       setAuth({ token, email })
-      setRoute('home')
+      openLandingRoute()
     }
   }, [])
+
+  // Honour a deep link from a reminder email; returns false when there is none
+  const openLedgerLink = (): boolean => {
+    const link = parseLedgerHash(window.location.hash)
+    if (!link) return false
+    history.replaceState(null, '', window.location.pathname + window.location.search)
+    if (link.route === 'ledger') {
+      setLedgerDate(link.date)
+      setRoute('ledger')
+    } else {
+      setLedgerMonth({ year: link.year, month: link.month })
+      setRoute('ledger-month')
+    }
+    return true
+  }
+  const openLandingRoute = () => { if (!openLedgerLink()) setRoute('home') }
+
+  // Same link opened while the app is already loaded in this tab
+  useEffect(() => {
+    if (!auth) return
+    const handler = () => { openLedgerLink() }
+    window.addEventListener('hashchange', handler)
+    return () => window.removeEventListener('hashchange', handler)
+  }, [auth])
 
   // ── Auth expiry handler ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -84,7 +132,7 @@ export default function App() {
     localStorage.setItem('auth_token', token)
     localStorage.setItem('auth_email', email)
     setAuth({ token, email })
-    setRoute('home')
+    openLandingRoute()
   }
 
   const handleLogout = async () => {
@@ -97,7 +145,10 @@ export default function App() {
     setRoute('login')
   }
 
-  const onNav  = (to: string) => setRoute(to as Route)
+  const onNav  = (to: string) => {
+    if (to === 'ledger') setLedgerDate(localDateStr())
+    setRoute(to as Route)
+  }
   const onHome = () => setRoute('home')
 
   // ── Toast ───────────────────────────────────────────────────────────────────
@@ -273,6 +324,38 @@ export default function App() {
           documentType={ocrDocumentType}
           onSave={handleOcrReviewSave}
           onCancel={handleOcrReviewCancel}
+        />
+      )}
+
+      {route === 'ledger' && (
+        <LedgerDayPage
+          date={ledgerDate}
+          onDateChange={setLedgerDate}
+          onHome={onHome}
+          onMonth={() => {
+            const [y, m] = ledgerDate.split('-').map(Number)
+            setLedgerMonth({ year: y, month: m })
+            setRoute('ledger-month')
+          }}
+          onNav={onNav}
+          onCapture={handleCapture}
+          onAddManual={handleAddManual}
+          onAddExpense={addExpense}
+          onDeleteExpense={deleteExpense}
+          onToast={showToast}
+        />
+      )}
+      {route === 'ledger-month' && (
+        <LedgerMonthPage
+          year={ledgerMonth.year}
+          month={ledgerMonth.month}
+          onMonthChange={(year, month) => setLedgerMonth({ year, month })}
+          onOpenDay={date => { setLedgerDate(date); setRoute('ledger') }}
+          onHome={onHome}
+          onNav={onNav}
+          onCapture={handleCapture}
+          onAddManual={handleAddManual}
+          onToast={showToast}
         />
       )}
 

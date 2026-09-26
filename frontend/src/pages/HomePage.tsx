@@ -1,5 +1,5 @@
 import React from 'react'
-import { Coins, Settings, Wallet, Receipt, ChevronRight, Loader2, LogOut } from 'lucide-react'
+import { Coins, Settings, Wallet, Receipt, ChevronRight, Loader2, LogOut, NotebookPen, Table2 } from 'lucide-react'
 import Page from '../components/Page'
 import Card from '../components/Card'
 import RatePill from '../components/RatePill'
@@ -84,6 +84,24 @@ export default function HomePage({ onNav, incomes, expenses, onCapture, onAddMan
               <p className="text-sm font-semibold tabular-nums">{fmt(expenseTRY, 'TRY')}</p>
             </div>
           </div>
+        </div>
+
+        {/* Nightly Ledger shortcuts */}
+        <div className="grid grid-cols-2 gap-3">
+          <button onClick={() => onNav('ledger')} className="text-left cursor-pointer active:scale-[0.99] transition-transform">
+            <Card className="!p-4 transition-shadow hover:shadow-md">
+              <NotebookPen className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mb-2" />
+              <p className="text-sm font-semibold text-slate-900 dark:text-gray-100">Daily Log</p>
+              <p className="text-xs text-slate-400 dark:text-gray-500">Log today's spending</p>
+            </Card>
+          </button>
+          <button onClick={() => onNav('ledger-month')} className="text-left cursor-pointer active:scale-[0.99] transition-transform">
+            <Card className="!p-4 transition-shadow hover:shadow-md">
+              <Table2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mb-2" />
+              <p className="text-sm font-semibold text-slate-900 dark:text-gray-100">Month Table</p>
+              <p className="text-xs text-slate-400 dark:text-gray-500">By card &amp; category</p>
+            </Card>
+          </button>
         </div>
 
         {/* Income Card */}

@@ -21,6 +21,9 @@ export type Expense = {
   documentType?: DocumentType
   documentId?: string       // present when linked to an uploaded document
   recurrenceRule?: RecurrenceRule
+  card?: string | null       // Nightly Ledger fields — stored as plain names
+  category?: string | null
+  note?: string | null
   isPlaceholder?: boolean   // transient UI state only — never sent to API
   createdAt?: string
 }
@@ -43,4 +46,45 @@ export type OcrStatusResponse = {
   vendor: string | null
   date: string | null
   amount: number | null
+}
+
+// ── Nightly Ledger ─────────────────────────────────────────────────────────
+
+export type LedgerOptionKind = 'CARD' | 'CATEGORY'
+
+export type LedgerOption = {
+  id: string
+  kind: LedgerOptionKind
+  name: string
+}
+
+export type LedgerOptions = {
+  cards: LedgerOption[]
+  categories: LedgerOption[]
+}
+
+export type LedgerDay = {
+  date: string
+  expenses: Expense[]
+  noSpend: boolean
+  totals: Partial<Record<Currency, number>>
+}
+
+export type LedgerTotalRow = {
+  label: string
+  currency: Currency
+  total: number
+  count: number
+  sharePercent: number
+}
+
+export type LedgerMonth = {
+  year: number
+  month: number
+  totals: Partial<Record<Currency, number>>
+  byCard: LedgerTotalRow[]
+  byCategory: LedgerTotalRow[]
+  expenses: Expense[]
+  noSpendDays: string[]
+  missingDays: string[]
 }
