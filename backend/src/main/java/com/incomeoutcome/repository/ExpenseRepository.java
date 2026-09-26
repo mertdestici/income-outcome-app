@@ -37,6 +37,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
     Optional<Expense> findByIdAndUser(UUID id, User user);
 
+    // Nightly ledger: a day or a month of expenses in date order
+    List<Expense> findByUserAndDateBetweenOrderByDateAscCreatedAtAsc(User user, LocalDate from, LocalDate to);
+
+    boolean existsByUserAndDate(User user, LocalDate date);
+
     // Reports: [currency, sum, count]
     @Query("""
             SELECT e.currency, SUM(e.amount), COUNT(e)

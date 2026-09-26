@@ -16,6 +16,9 @@ export type CreateExpensePayload = {
   documentType?: DocumentType
   documentId?: string        // links a pre-uploaded OCR document
   recurrenceRule?: RecurrenceRule
+  card?: string
+  category?: string
+  note?: string
 }
 
 export const expenseService = {

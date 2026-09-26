@@ -40,6 +40,15 @@ public class Expense {
     @Column(nullable = false)
     private LocalDate date;
 
+    @Column(length = 50)
+    private String card;
+
+    @Column(length = 50)
+    private String category;
+
+    @Column(length = 500)
+    private String note;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", length = 20)
     private DocumentType documentType;

@@ -72,6 +72,9 @@ public class RecurringEntryScheduler {
                     .currency(template.getCurrency())
                     .date(today)
                     .documentType(template.getDocumentType())
+                    .card(template.getCard())
+                    .category(template.getCategory())
+                    .note(template.getNote())
                     .recurrenceRule(RecurrenceRule.NONE)
                     .build();
             expenseRepository.save(copy);
@@ -85,6 +88,9 @@ public class RecurringEntryScheduler {
                     .currency(template.getCurrency())
                     .date(template.getDate())
                     .documentType(template.getDocumentType())
+                    .card(template.getCard())
+                    .category(template.getCategory())
+                    .note(template.getNote())
                     .recurrenceRule(template.getRecurrenceRule())
                     .nextOccurrence(nextOccurrence)
                     .createdAt(template.getCreatedAt())

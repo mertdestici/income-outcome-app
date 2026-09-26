@@ -40,6 +40,18 @@ public class User implements UserDetails {
     @Column(name = "report_email")
     private String reportEmail;
 
+    @Column(nullable = false, length = 64)
+    @Builder.Default
+    private String timezone = "Europe/Istanbul";
+
+    @Column(name = "daily_reminder_enabled", nullable = false)
+    @Builder.Default
+    private boolean dailyReminderEnabled = false;
+
+    @Column(name = "monthly_ledger_enabled", nullable = false)
+    @Builder.Default
+    private boolean monthlyLedgerEnabled = false;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -47,10 +59,23 @@ public class User implements UserDetails {
         this.reportEmail = reportEmail;
     }
 
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
+    public void setDailyReminderEnabled(boolean dailyReminderEnabled) {
+        this.dailyReminderEnabled = dailyReminderEnabled;
+    }
+
+    public void setMonthlyLedgerEnabled(boolean monthlyLedgerEnabled) {
+        this.monthlyLedgerEnabled = monthlyLedgerEnabled;
+    }
+
     @PrePersist
     private void prePersist() {
         if (createdAt == null) createdAt = Instant.now();
         if (role == null) role = Role.USER;
+        if (timezone == null) timezone = "Europe/Istanbul";
     }
 
     // UserDetails

@@ -11,6 +11,7 @@ import com.incomeoutcome.entity.User;
 import com.incomeoutcome.exception.ResourceNotFoundException;
 import com.incomeoutcome.repository.DocumentRepository;
 import com.incomeoutcome.repository.ExpenseRepository;
+import com.incomeoutcome.repository.NoSpendDayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final DocumentRepository documentRepository;
+    private final NoSpendDayRepository noSpendDayRepository;
     private final AuditService auditService;
 
     @Transactional
@@ -40,8 +42,14 @@ public class ExpenseService {
                 .documentType(request.documentType())
                 .recurrenceRule(rule)
                 .nextOccurrence(IncomeService.computeNextOccurrence(rule, request.date()))
+                .card(blankToNull(request.card()))
+                .category(blankToNull(request.category()))
+                .note(blankToNull(request.note()))
                 .build();
         Expense saved = expenseRepository.save(expense);
+
+        // Logging a real expense replaces any "nothing spent" mark on that day
+        noSpendDayRepository.deleteByUserAndDate(user, saved.getDate());
 
         // Link a pre-uploaded OCR document to this expense if provided
         if (request.documentId() != null) {
@@ -94,6 +102,9 @@ public class ExpenseService {
                 .documentType(request.documentType())
                 .recurrenceRule(rule)
                 .nextOccurrence(IncomeService.computeNextOccurrence(rule, request.date()))
+                .card(blankToNull(request.card()))
+                .category(blankToNull(request.category()))
+                .note(blankToNull(request.note()))
                 .createdAt(expense.getCreatedAt())
                 .build();
         ExpenseResponse response = toResponse(expenseRepository.save(updated));
@@ -109,7 +120,11 @@ public class ExpenseService {
         expenseRepository.delete(expense);
     }
 
-    private ExpenseResponse toResponse(Expense expense) {
+    static String blankToNull(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
+    }
+
+    ExpenseResponse toResponse(Expense expense) {
         return new ExpenseResponse(
                 expense.getId(),
                 expense.getTitle(),
@@ -118,6 +133,9 @@ public class ExpenseService {
                 expense.getDate(),
                 expense.getDocumentType(),
                 expense.getRecurrenceRule(),
+                expense.getCard(),
+                expense.getCategory(),
+                expense.getNote(),
                 expense.getCreatedAt()
         );
     }
