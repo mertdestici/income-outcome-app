@@ -209,7 +209,7 @@ export default function LedgerDayPage({ date, onDateChange, onHome, onMonth, onN
             )}
             <div className="grid gap-1.5">
               <label className={labelCls} htmlFor="ledger-note">Note <span className="font-normal text-slate-400 dark:text-gray-500">(optional)</span></label>
-              <input id="ledger-note" value={note} maxLength={500} onChange={e => setNote(e.target.value)} placeholder="e.g. lunch with Ana" className={inputCls} />
+              <input id="ledger-note" value={note} maxLength={500} onChange={e => setNote(e.target.value)} placeholder="e.g. lunch" className={inputCls} />
             </div>
             <button type="submit" disabled={!canSave}
               className="flex items-center justify-center gap-2 w-full rounded-xl bg-rose-600 disabled:bg-rose-300 dark:disabled:bg-rose-900 disabled:cursor-not-allowed text-white px-4 py-3 font-semibold cursor-pointer active:scale-[0.98] transition-all duration-150">
